@@ -1,0 +1,122 @@
+Blaga Ana-Maria-Andreea, 314CB
+
+Functia "INIT_DB":
+	- initializeaza baza de date care va fi utilizata in celelalte functii;
+	- este alocata memorie pentru baza de date;
+	- in cazul in care aceasta esueaza se returneaza NULL;
+	- in cazul in care alocarea reuseste:
+	 	- se copiaza numele bazei de date in campul "name" al acesteia;
+	 	- campul "table" este initializat cu NULL(nu exista niciun tabel in baza de date);
+	 	- se returneaza adresa bazei de date.
+
+Functia "CREATE":
+	- creeaza un tabel in baza de date existenta;
+	- se verifica daca exista deja un tabel cu acelasi nume in baza de date;
+	- in caz in care acesta exista deja in baza de date:
+		- se afiseaza un mesaj de eroare;
+		- se returneaza 1;
+	- in cazul in care nu exista deja in baza de date:
+		- se aloca memorie pentru tabel;
+		- in cazul in care alocarea nu reuseste se returneaza 1;
+		- in cazul in care alocarea reuseste:
+			- se copiaza numele tabelului in campul "name" al acestuia;
+			- se alege tipul tabelului si se pastreaza acesta in campul "type";
+			- in cazul in care nu exista tipul dorit:
+				- se afiseaza un mesaj de eroare;
+				- se elibereaza memoria tabelului;
+				- se returneaza 1;
+			- se adauga tabelul in baza de date;
+			- se aloca memorie pentru numele coloanelor(capul de tabel) si se copiaza acestea in campurile "name";
+	- se returneaza 0 in cazul crearii reusite a tabelului.
+
+Functiile "ADD_INT/FLOAT/STRING"(procedeul este identic in proportie de 99%):
+	- se adauga o linie de tip INT/FLOAT/STRING intr-un tabel precizat;
+	- se aloca memorie pentru linie;
+	- in cazul in care alocarea esueaza se returneaza 0;
+	- in cazul in care alocarea reuseste:
+		- se aloca memorie pentru celulele care compun linia;
+		- in cazul in care alocarea esueaza se returneaza 1;
+		- in cazul in care alocarea reuseste:
+			- se adauga valoarea in celula;
+			- se leaga celula in linie;
+		- se leaga linia in tabel;
+	- se returneaza 0 in cazul in care adaugarea reuseste.
+
+Functia "ADD":
+	- adauga o linie de date intr-un tabel precizat;
+	- se verifica daca exista un tabel in baza de date cu numele respectiv:
+	- in cazul in care nu exista:
+		- se afiseaza un mesaj de eroare;
+		- se returneaza 1;
+	- in cazul in care exista:
+		- se adauga linia in tabel folosind una din functiile ADD_INT/ADD_FLOAT/ADD_STRING in functie de tipul tabelului;
+		- se returneaza rezultatul adaugarii
+			- 0 - adaugare reusita;
+			- 1 - adaugare esuata.
+
+Functia "PRINT_TABLE_INFO":
+	- afiseaza capul de tabel al unui tabel precizat;
+	- se afiseaza numele tabelului, apoi numele coloanelor si delimitatorii.
+
+Functiile "PRINT_INT/FLOAT/STRING_LINE"(procedeul este identic in proportie de 99%):
+	- afiseaza continutul unei linii de tip INT/FLOAT/STRING.
+
+Functiile "PRINT_INT/FLOAT/STRING"(procedeul este identic in proportie de 99%):
+	- afiseaza toate liniile dintr-un tabel de tip INT/FLOAT/STRING.
+
+Functia "PRINT":
+	- afiseaza continutul unui tabel precizat prin nume;
+	- in cazul in care tabelul nu exista in baza de date se afiseaza un mesaj de eroare;
+	- iar in cazul in care acesta exista, in functie de tipul tabelului sunt apelate functii specializate pentru fiecare dintre acestea:PRINT_INT/PRINT_FLOAT/PRINT_STRING.
+
+Functiile "DELETE_INT/FLOAT/STRING_LINE"(procedeul este identic in proportie de 99%):
+	- functia elibereaza memoria alocata fiecarei celule de tip INT/FLOAT/STRING dintr-o linie de acelasi tip.
+
+Functiile "COMPARE_INT/FLOAT/STRING"(procedeul este identic in proportie de 99%):
+	- compara valorile din celulele aflate in a col_ind coloana din fiecare linie a unui tabel de tip INT/FLOAT/STRING precizat cu o valoare de referinta(cmp_val), folosind o relatie precizata(rel);
+	- functia primeste ca parametru variabila op care defineste operatia ce se va efectua in cazul in care relatia este adevarata, astfel:
+		- 0 - SEARCH_LINE - afiseaza linia respectiva
+		- 1 - DELETE_LINE - elimina din tabel linia respectiva
+
+Functia "SEARCH":
+	- functia cauta in baza de date existenta un tabel precizat, iar in cazul in care acesta nu exista este afisat un mesaj de eroare;
+	- apoi este cautata in acesta o coloana precizata, iar in cazul in care aceasta nu exista se afiseaza un mesaj de eroare;
+	- este afisat capul de tabel in cazul in care coloana respectiva se afla in tabel, iar apoi sunt afisate liniile care indeplinesc o anumita conditie folosind functii specializate pentru tipul tabelului: COMPARE_INT/COMPARE_FLOAT/COMPARE_STRING.
+
+Functia "DELETE":
+	- cauta in baza de date existenta un tabel precizat, iar in cazul in care acesta nu exista este afisat un mesaj de eroare;
+	- apoi este cautata in acesta o coloana precizata, iar in cazul in care aceasta nu exista se afiseaza un mesaj de eroare;
+	- sunt sterse liniile care indeplinesc o anumita conditie folosind functii specializate pentru tipul tabelului: COMPARE_INT/COMPARE_FLOAT/COMPARE_STRING.
+
+Functiile "CLEAR_INT/FLOAT/STRING"(procedeul este identic in proportie de 99%):
+	- Functia elimina toate liniile dintr-un tabel de tip INT/FLOAT/STRING.
+
+Functia "CLEAR":
+	- cauta un tabel precizat intr-o baza de date, iar in cazul in care acesta nu exista este afisat un mesaj de eroare;
+	- in cazul in care acesta exista sunt eliminate toate liniile din tabelfolosind functii specializate pentru tipul tabelului: CLEAR_INT/CLEAR_FLOAT/CLEAR_STRING.
+
+Functia "DELETE_TABLE_INFO":
+	- elibereaza memoria capului de tabel;
+	- este eliberata pe rand memoria ocupata de numele coloanelor;
+	- apoi campul "columns" al tabelului este setat pe NULL.
+
+Functia "DELETE_TABLE":
+	- cauta un tabel precizat intr-o baza de date, iar in cazul in care acesta nu exista este afisat un mesaj de eroare;
+	- in cazul in care acesta exista este eliberata memoria capuilui de tabel folosind functia: DELETE_TABLE_INFO;
+	- apoi este eliminata memoria pentru liniile tabelului folosind functii specilizate pentru tipul de tabel: CLEAR_INT/CLEAR_FLOAT/CLEAR_STRING;
+	- se elimina tabelul din baza de date.
+
+Functia 'DELETE_DB':
+	- elibereaza memoria ocupata de o baza de date;
+	- pentru fiecare tabel este eliberata memoria pentru capul de tabel si apoi liniile acestuia folosind functii specializate in functie de tipul tabelului: CLEAR_INT/CLEAR_FLOAT/CLEAR_STRING;
+	- apoi este eliberata memoria ocupata de fiecare tabel, iar in final cea ocupata de baza de date.
+
+In "main":
+	- se citeste comanda dorita;
+	- se verifica daca aceasta exista in meniu;
+	- in cazul in care nu exista se afiseaza un mesaj de eroare;
+	- in cazul in care exista se realizeaza comanda respectiva.
+
+Punctaj total 85.0/85.0
+Punctaj valgrind 20.0/20.0
+
